@@ -21,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @AutoConfigureTestDatabase
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, properties = "spring.jpa.database-platform=org.hibernate.dialect.H2Dialect")
-class CandidateRepositoryRepositoryTest {
+class CandidateRepositoryTest {
     @Autowired
     private CandidateRepository candidateRepository;
     @Autowired
@@ -43,7 +43,6 @@ class CandidateRepositoryRepositoryTest {
                 .phoneNumber("19161817")
                 .birthDate(LocalDate.of(2003,11,1))
                 .hasExtraTime(false)
-
                 .build();
 
         CandidateEntity candidateEntity2 = CandidateEntity
@@ -54,7 +53,6 @@ class CandidateRepositoryRepositoryTest {
                 .phoneNumber("12131415")
                 .birthDate(LocalDate.of(2003, 2, 3))
                 .hasExtraTime(true)
-
                 .build();
 
 

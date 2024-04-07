@@ -1,5 +1,6 @@
 package fr.uga.l3miage.spring.tp3.endpoints;
 
+import fr.uga.l3miage.spring.tp3.exceptions.SessionConflictResponse;
 import fr.uga.l3miage.spring.tp3.request.SessionCreationRequest;
 import fr.uga.l3miage.spring.tp3.responses.SessionResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -24,5 +25,11 @@ public interface SessionEndpoints {
     SessionResponse createSession(@RequestBody SessionCreationRequest request);
 
 
+    /*@Operation(description = "Faire passer l'état d'une session de l'état EVAL_STARTED à EVAL_ENDED")
+    @ApiResponse(responseCode = "200",description = "La session est bien passée à l'état EVAL_ENDED")
+    @ApiResponse(responseCode = "409" ,description = "L'état de la session n'a pas pu être changé", content = @Content(schema = @Schema(implementation = SessionConflictResponse.class),mediaType = MediaType.APPLICATION_JSON_VALUE))
+    @ResponseStatus(HttpStatus.OK)
+    @PatchMapping("/{sessionId}/end")
+      endSession(@PathVariable Long sessionId);*/
 
 }

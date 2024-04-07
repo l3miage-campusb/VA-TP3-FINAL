@@ -3,13 +3,14 @@ package fr.uga.l3miage.spring.tp3.services;
 import fr.uga.l3miage.spring.tp3.components.ExamComponent;
 import fr.uga.l3miage.spring.tp3.components.SessionComponent;
 import fr.uga.l3miage.spring.tp3.enums.SessionStatus;
+import fr.uga.l3miage.spring.tp3.exceptions.rest.CandidateNotFoundRestException;
 import fr.uga.l3miage.spring.tp3.exceptions.rest.CreationSessionRestException;
+import fr.uga.l3miage.spring.tp3.exceptions.rest.SessionConflictRestException;
+import fr.uga.l3miage.spring.tp3.exceptions.technical.CandidateNotFoundException;
 import fr.uga.l3miage.spring.tp3.exceptions.technical.ExamNotFoundException;
+import fr.uga.l3miage.spring.tp3.exceptions.technical.SessionConflictException;
 import fr.uga.l3miage.spring.tp3.mappers.SessionMapper;
-import fr.uga.l3miage.spring.tp3.models.EcosSessionEntity;
-import fr.uga.l3miage.spring.tp3.models.EcosSessionProgrammationEntity;
-import fr.uga.l3miage.spring.tp3.models.EcosSessionProgrammationStepEntity;
-import fr.uga.l3miage.spring.tp3.models.ExamEntity;
+import fr.uga.l3miage.spring.tp3.models.*;
 import fr.uga.l3miage.spring.tp3.request.SessionCreationRequest;
 import fr.uga.l3miage.spring.tp3.responses.SessionResponse;
 import lombok.RequiredArgsConstructor;
@@ -46,6 +47,22 @@ public class SessionService {
             return sessionMapper.toResponse(sessionComponent.createSession(ecosSessionEntity));
         }catch (RuntimeException | ExamNotFoundException e){
             throw new CreationSessionRestException(e.getMessage());
+        }
+    }
+
+    public void endSession(long id){
+        try{
+            EcosSessionEntity ecosSessionEntity = sessionComponent.endSession(id);
+            Set<ExamEntity> exams = ecosSessionEntity.getExamEntities();
+            Set<CandidateEvaluationGridEntity> copies = new java.util.HashSet<>(Set.of());
+            for(ExamEntity e : exams){
+                copies.addAll(e.getCandidateEvaluationGridEntities());
+            }
+
+
+        }
+        catch(SessionConflictException e){
+            throw new SessionConflictRestException(e.getMessage(),e.getSessionStatus());
         }
     }
 }
